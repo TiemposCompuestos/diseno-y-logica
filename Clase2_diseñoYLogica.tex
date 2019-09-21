@@ -1,0 +1,785 @@
+\documentclass[authoryear,a4paper, 14pt]{scrartcl}
+% Agregué tipo de papel (creo que defaultea a carta, pero no estoy seguro) y tamaño de letra para que no sea tan chica. Cambié el documentclass por uno que a mí me gusta más pero es una cuestión de gustos.
+
+% Con esto agrandás los márgenes
+\topmargin=-1.5cm
+\textwidth=16cm
+\textheight=24cm
+\oddsidemargin=0cm
+
+% Este es el paquete que hace que las "References se te ponga en castellano".
+\usepackage[spanish]{babel}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8x]{inputenc}
+
+% Podés cambiar lmodern por times. Es una cuestión de gustos.
+\usepackage{times}
+
+% apacite te deja usar el bibliographystyle apacite (fijate más abajo) que te pone las ref. bibliográficas en castellano (e.g., "y" en vez de "and").
+% \usepackage{natbib}
+\usepackage[natbibapa]{apacite}
+
+% El paquete sectsty te permite usar los comandos de abajo para cambiar el tamaño de los encabezados. Yo lo uso porque no me gusta que sean tan grandes.
+\usepackage{sectsty}
+\sectionfont{\fontsize{14}{15}\selectfont}
+\subsectionfont{\fontsize{13}{15}\selectfont}
+\subsubsectionfont{\fontsize{13}{15}\selectfont}
+
+% Con fancyhdr podés agregar un encabezado fancy. Hay comandos para editar el formato, pero fijate en internet. Entre las llaves de \rhead podés escribir algo que quieras que se alinee a la derecha en el encabezado (como si fueran dos columnas), pero cuidado porque se te puede superponer con el encabezado default. Es importante que fijes títulos cortos para tus secciones porque si no te van a quedar dos líneas de encabezado lo hacés así: \section[título_corto]{título_normal}
+\usepackage{fancyhdr}
+\rhead{}
+\pagestyle{fancy}
+
+% Lo malo de scrartcl es que te agranda mucho la letra del título y eso. Pero con estos comandos lo achicás.
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd{\@maketitle}{\huge}{\Large}{}{}
+\makeatother
+\setkomafont{author}{\large}
+\setkomafont{date}{\large}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{hyperref}
+\usepackage{longtable,booktabs}
+\usepackage{graphicx,grffile}
+\usepackage[normalem]{ulem}
+
+\title{Diseño y lógica de los estudios cuantitativos}
+\author{Santiago Gualchi - Federico Alvarez}
+\date{21 de septiembre de 2019}
+
+%\bibliographystyle{apacite}
+
+\begin{document}
+    \pagenumbering{gobble}
+    \maketitle
+    \pagenumbering{arabic}
+
+
+\hypertarget{introduccion}{%
+\section{Introducción}\label{introduccion}}
+
+En la
+\href{https://drive.google.com/file/d/1vRmq8vyfwkgANQznM2oPuzhorcoIaSkZ/view?usp=sharing}{clase
+pasada}, realizamos una aproximación a la estadística y discutimos su
+relevancia a la hora de estudiar el lenguaje. Establecimos que la estadística es la disciplina que se ocupa
+de todas las etapas que involucran a los datos, incluyendo el diseño
+previo a su recolección, su análisis e interpretación, y su
+comunicación. En esta línea, introdujimos también una serie de
+conceptos, entre ellos: población, muestra, variable, hipótesis, espacio
+muestral y probabilidad.
+
+Asimismo, establecimos la diferencia entre estadística descriptiva y
+estadística inferencial. La primera se refiere al conjunto de técnicas
+matemáticas que se limitan a describir las propiedades de la muestra
+estudiada. La segunda alude a las pruebas que permiten generalizar las
+observaciones sobre la muestra a la población relevante.
+
+En esta reunión, vamos a avanzar sobre las líneas propuestas en el
+encuentro anterior. Nos vamos a concentrar en las etapas de diseño de
+una investigación para lo cual vamos a profundizar algunos de los
+conceptos que ya introdujimos. Vamos a centrarnos en las hipótesis y
+variables, y a estudiar sus propiedades y las repercusiones que traen
+las distintas formas de operacionalizarlas. Vamos a explicar cómo
+recolectar los datos de forma rigurosa y ver algunos buenos hábitos
+para su almacenamiento.
+
+\hypertarget{ejercitacion}{%
+\subsection{Ejercitación}\label{ejercitacion}}
+
+\begin{enumerate}
+    \item
+      Antes de avanzar, escribí definiciones para los siguientes conceptos:
+      hipótesis, variable y operacionalización. No te preocupes si algunas
+      de estas nociones te resultan muy nuevas. Está bien si las definís
+      como te salga.
+    \item
+      ¿Cómo caracterizarías los procesos de recolección y almacenamiento de
+      datos? ¿Qué cuidados tendrías a la hora de llevarlos a cabo?
+    \item
+      ¿Cómo pensás que podemos hacer para saber si nuestra hipótesis es
+      correcta o incorrecta?
+\end{enumerate}
+
+
+
+\hypertarget{scouting}{%
+\section{\texorpdfstring{\emph{Scouting}}{Scouting}}\label{scouting}}
+
+Al principio de una investigación se suelen llevar a cabo las siguientes
+tareas:
+
+\begin{itemize}
+    \item
+      una primera caracterización del fenómeno;
+    \item
+      estudio de la bibliografía relevante;
+    \item
+      observación del fenómeno en escenarios naturales para posibilitar una
+      primera generalización inductiva;
+    \item
+      recolección de información adicional (e.g., de colegas, estudiantes,
+      etc.);
+    \item
+      razonamiento deductivo.
+\end{itemize}
+
+Si estudiamos el orden de palabras de los verbos frasales del inglés,
+encontramos la siguiente alternancia:
+
+\begin{enumerate}
+\def\labelenumi{(\arabic{enumi})}
+\item
+  \begin{enumerate}
+  \def\labelenumii{\alph{enumii}.}
+  \item
+    He picked up {[}\textsubscript{SN} the book{]}.
+
+    Orden: \emph{VPO} (verbo - partícula - objeto)
+  \item
+    He picked {[}\textsubscript{SN} the book{]} up.
+
+    Orden: \emph{VOP} (verbo - objeto- partícula)
+  \end{enumerate}
+\end{enumerate}
+
+Al observar este fenómeno podemos encontrar un gran número de posibles
+variables que podrían influir en la elección de una u otra forma. Las
+\textbf{variables} son símbolos que pueden tomar, por lo menos, dos
+estados o niveles diferentes (e.g., la edad de un grupo de estudiantes
+de secundaria). En este sentido, se oponen a las \textbf{constantes},
+que siempre presentan un mismo valor sin experimentar variación (e.g.,
+la edad de un grupo de jóvenes de 12 años). Entre las variables que
+pueden afectar al posicionamiento de la partícula en los verbos frasales
+del inglés, las siguientes han sido propuestas en la bibliografía:
+
+\begin{itemize}
+    \item
+      Complejidad del OD (Fraser, 1966);
+    \item
+      Largo del OD (Chen, 1986; Hawkins, 1994);
+    \item
+      Presencia de un SP direccional (Chen, 1986);
+    \item
+      Animacidad (Gries, 2003);
+    \item
+      Concreción (Gries, 2003); y
+    \item
+      Tipo del OD (Van Dongen, 1919), entre otras.
+\end{itemize}
+
+Esta información puede ser más fácilmente visualizada en formato
+tabular, que permite reconocer qué variables han sido consideradas en
+los distintos estudios y cuántas variables consideró cada estudio (véase
+Cuadro 1).
+
+\begin{longtable}[]{@{}lccccc@{}}
+\caption{\protect\hypertarget{cuadro1}{}{Resumen} de la bibliografía
+sobre posicionamiento de partículas en inglés I.}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.18\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\centering
+Van Dongen (1919)\strut
+\end{minipage} & \begin{minipage}[b]{0.13\columnwidth}\centering
+Fraser (1966)\strut
+\end{minipage} & \begin{minipage}[b]{0.13\columnwidth}\centering
+Chen (1986)\strut
+\end{minipage} & \begin{minipage}[b]{0.13\columnwidth}\centering
+Hawkins (1994)\strut
+\end{minipage} & \begin{minipage}[b]{0.13\columnwidth}\centering
+Gries (2003)\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.18\columnwidth}\raggedright
+\strut
+\end{minipage} & \begin{minipage}[b]{0.15\columnwidth}\centering
+Van Dongen (1919)\strut
+\end{minipage} & \begin{minipage}[b]{0.13\columnwidth}\centering
+Fraser (1966)\strut
+\end{minipage} & \begin{minipage}[b]{0.13\columnwidth}\centering
+Chen (1986)\strut
+\end{minipage} & \begin{minipage}[b]{0.13\columnwidth}\centering
+Hawkins (1994)\strut
+\end{minipage} & \begin{minipage}[b]{0.13\columnwidth}\centering
+Gries (2003)\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.18\columnwidth}\raggedright
+Complejidad\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\centering
+\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+\(\times\)\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.18\columnwidth}\raggedright
+Largo\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\centering
+\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+\(\times\)\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+\(\times\)\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.18\columnwidth}\raggedright
+SP Direccional\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\centering
+\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+\(\times\)\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.18\columnwidth}\raggedright
+Animacidad\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\centering
+\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+\(\times\)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.18\columnwidth}\raggedright
+Concreción\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\centering
+\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+\(\times\)\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.18\columnwidth}\raggedright
+Tipo\strut
+\end{minipage} & \begin{minipage}[t]{0.15\columnwidth}\centering
+\(\times\)\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+\strut
+\end{minipage} & \begin{minipage}[t]{0.13\columnwidth}\centering
+\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+
+\hypertarget{ejercitacion-3}{%
+\subsection{Ejercitación}\label{ejercitacion-3}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Planteá un problema de investigación de tu interés.
+\item
+  ¿Cómo lo caracterizarías?
+\end{enumerate}
+
+\hypertarget{hipotesis-y-operacionalizacion}{%
+\section{Hipótesis y
+operacionalización}\label{hipotesis-y-operacionalizacion}}
+
+Una vez que tenemos una visión general del fenómeno que queremos
+estudiar, es el momento de formular \textbf{hipótesis}.
+
+\hypertarget{hipotesis-cientificas-en-forma-de-texto}{%
+\subsection{Hipótesis científicas en forma de
+texto}\label{hipotesis-cientificas-en-forma-de-texto}}
+
+Las hipótesis son:
+
+\begin{itemize}
+    \item
+      enunciados generales ocupados de más de un evento singular;
+    \item
+      enunciados con una estructura condicional (\emph{si\ldots,
+      entonces\ldots{}}), o que, al menos, puede ser parafraseados como tal;
+      y
+    \item
+      potencialmente \textbf{falsables} (i.e., se pueden pensar eventos o
+      situaciones que contradigan al enunciado) y \textbf{testeables} (i.e.,
+      se pueden realizar pruebas que determinen la verdad o falsedad del
+      enunciado).
+\end{itemize}
+
+Para el estudio del posicionamiento de partículas en inglés, podemos
+pensar, por ejemplo, las siguientes hipótesis:
+
+\begin{itemize}
+    \item
+      Si el objeto directo de un verbo frasal
+      transitivo es sintácticamente complejo, entonces los hablantes nativos
+      producirán el orden de constituyentes \emph{VPO} más frecuentemente que
+      cuando el objeto directo es sintácticamente simple;
+    \item
+      Si el objeto directo de un verbo frasal transitivo es largo, entonces
+      los hablantes nativos producirán el orden de constituyentes \emph{VPO}
+      más seguido que cuando el objeto directo es corto; o
+    \item
+      Si una construcción de verbo-partícula es seguida por un SP
+      direccional, entonces los hablantes nativos producirán el orden de
+      constituyentes \emph{VOP} más seguido que cuando el SP direccional no
+      está presente.
+\end{itemize}
+
+A su vez, las variables que consideremos pueden clasificarse según su
+influencia:
+
+\begin{description}
+    \item[\label=\small{Variable independiente:}]
+    Es la variable presente en la prótasis, y suele referirse a la causa de
+    los cambios/efectos. La variable independiente representa tratamientos o
+    condiciones que el investigador controla (directa o indirectamente) para
+    entender sus efectos sobre la variable dependiente.
+    \item[\label=\small{Variable dependiente:}]
+    Es la variable presente en la apódosis, cuyos valores, variación o
+    distribución se quieren explicar. La variable dependiente es la salida
+    que depende del tratamiento experimental o de lo que el investigador
+    cambia o manipula.
+    \item[\label=\small{Variables de confusión o \emph{confounders}:}]
+    Son variables que interactúan tanto con la variable independiente como
+    con la variable dependiente. Es importante identificar los confounders
+    para realizar mejores diseños experimentales y obtener resultados con
+    menos ruido.
+\end{description}
+
+Una vez que formulamos nuestra hipótesis, a la que vamos a llamar
+\textbf{hipótesis} \textbf{alternativa} (H\textsubscript{1}), y antes de
+recolectar datos, tenemos que definir las condiciones
+que van a falsar nuestra hipótesis. De este modo, definimos la
+\textbf{hipótesis nula} (H\textsubscript{0}) como el opuesto lógico de
+H\textsubscript{1} (predice la ausencia del efecto que enuncia
+H\textsubscript{1}). La llamamos hipótesis nula porque se postula para
+ser anulada con los datos de la investigación. Esto es importante,
+porque la idea es que ambas hipótesis cubran todo el espacio de
+resultados o \textbf{espacio muestral}, i.e., el conjunto de todos los
+resultados teóricamente posibles. Por ejemplo:
+
+\begin{itemize}
+    \item
+      Si el objeto directo de un verbo frasal transitivo es sintácticamente
+      complejo, entonces los hablantes nativos \emph{no} producirán el orden
+      de constituyentes VPO más seguido que cuando el objeto directo es
+      sintácticamente simple (H\textsubscript{0} correspondiente a la
+      primera hipótesis de tipo 1); o
+    \item
+      Los dos niveles de Orden (VPO y VOP) \sout{\emph{no} no} son
+      igualmente frecuentes (H\textsubscript{0} correspondiente a la
+      hipótesis de tipo 2).
+\end{itemize}
+
+Ahora bien, en algunas investigaciones es posible suponer que los
+efectos o relaciones entre variables ocurran en una dirección
+determinada (se desvíen de la H\textsubscript{0} hacia \emph{un} lado).
+En estos casos, se dice que se establece una \textbf{hipótesis
+direccional}. Por el contrario, las \textbf{hipótesis no direccionales}
+solo predicen que existe un efecto o relación sin especificar la
+dirección del efecto.
+
+\hypertarget{operacionalizacion-de-variables}{%
+\subsection{Operacionalización de
+variables}\label{operacionalizacion-de-variables}}
+
+Una vez que formulamos nuestra hipótesis, es importante encontrar un
+modo de \textbf{operacionalizar} las variables. Esto supone decidir qué
+será observado, contado, medido, etc. cuando investiguemos nuestras
+hipótesis. Por ejemplo, si volvemos a las variables consideradas en la
+bibliografía sobre el orden de palabras en los verbos frasales del
+inglés, podemos operacionalizarlas como sigue:
+
+\begin{itemize}
+    \item
+      Complejidad: OD \emph{simple} (e.g., \emph{the book}), \emph{OD
+      modificado} \emph{sintagmáticamente} (e.g., \emph{the book on the
+      table}) u \emph{OD modificado por} \emph{cláusula} (e.g., \emph{the
+      book I had bought in Europe});
+    \item
+      Largo: el largo del OD medido en sílabas;
+    \item
+      SP direccional: \emph{presencia} o \emph{ausencia} de un SP
+      direccional (e.g., \emph{He picked the book up {[}\textsubscript{SP}
+      from the table{]}});
+    \item
+      Animacidad: \emph{animado} o \emph{inanimado};
+    \item
+      Concreción: \emph{concreto} o \emph{abstracto}; y
+    \item
+      Tipo del OD: \emph{pronominal} (e.g., \emph{He picked
+      {[}\textsubscript{pron} him{]} up this morning}),
+      \emph{semipronominal} (e.g., \emph{He picked {[}\textsubscript{semi}
+      something{]} up from the floor}), \emph{léxico} (e.g., \emph{He picked
+      {[}\textsubscript{léx} people{]} up this morning}) o \emph{nombre
+      propio} (e.g., \emph{He picked {[}\textsubscript{prop} Peter{]} up
+      this morning}).
+\end{itemize}
+
+Otro ejemplo, si queremos operacionalizar el conocimiento de una lengua
+extranjera de una persona, podemos tomar en consideración:
+
+\begin{itemize}
+    \item
+      La complejidad de las oraciones que una persona puede formar en la
+      lengua en cuestión;
+    \item
+      El tiempo en segundos entre dos errores en la conversación;
+    \item
+      El número de errores cada 100 palabras en un texto que la persona
+      escriba en 90 minutos.
+\end{itemize}
+
+La operacionalización de variables involucra el uso de \textbf{niveles}
+numéricos para representar estados de variables. Un número puede ser una
+medida (e.g., 402 ms de tiempo de reacción), pero estados discretos no 
+numéricos también pueden, teóricamente, ser codificados usando números. 
+Según los niveles de medida las variables pueden clasificarse en:
+
+\begin{description}
+    \item[\label=\small{Variable nominal (o binaria)}:]
+    Sólo pueden tomar dos niveles diferentes y sus valores sólo revelan que
+    los objetos con estos valores exhiben características diferentes (e.g.,
+    animacidad);
+    \item[\label=\small{Variable categórica:}]
+    Son una generalización del caso anterior a tres niveles o más.
+    (e.g., aspecto);
+    \item[\label=\small{Variable ordinal:}]
+    Distinguen categorías que presentan alguna clase de secuencia o progresión.
+    \item[\label=\small{Variable cuantitativa:}]
+    Consisten en valores numéricos que pueden ser continuos o discretos, para los cuales la diferencia absoluta entre los valores (variables de intervalo) o la proporción entre los valores (variable de razón) son significativas (e.g., largo en sílabas).
+\end{description}
+
+\hypertarget{hipotesis-estadisticas-en-formato-estadisticomatematico}{%
+\subsection{Hipótesis estadísticas en formato
+estadístico/matemático}\label{hipotesis-estadisticas-en-formato-estadisticomatematico}}
+
+Después de formular las hipótesis (H\textsubscript{0} y
+H\textsubscript{1}) en forma de texto y definir cómo operacionalizar las
+variables, es necesario formular dos \textbf{versiones estadísticas} de
+las hipótesis. Esto significa expresar los resultados numéricos
+esperados sobre la base de las hipótesis textuales. Dichos resultados
+suelen involucrar una de las siguientes formas matemáticas:
+
+\begin{itemize}
+    \item Frecuencias
+    \item Promedios
+    \item Dispersiones
+    \item Correlaciones
+    \item Distribuciones
+\end{itemize}
+
+Este va a ser el formato que vamos a usar para evaluar la
+\textbf{significancia} de nuestras hipótesis, y su
+definición va a depender directamente de cómo operacionalizamos las
+variables. Por ejemplo, si nuestra hipótesis involucra la variable largo
+del OD, su forma estadística no va a ser la misma si la operacionalizamos
+cuantitativamente como largo medido en número de sílabas o de forma
+discreta como una variable categórica con niveles \emph{corto},
+\emph{mediano} y \emph{largo.} En el primer caso, nuestras hipótesis
+estadísticas van a poder referirse a la media del largo, mientras que
+esto no es posible en el segundo caso. Tomando largo como una variable
+categórica podríamos operacionalizar nuestras hipótesis, por ejemplo,
+basándonos en conteos o frecuencias.
+
+Retomemos la H\textsubscript{1} respecto de la
+presencia/ausencia de un SP direccional: si una construcción de
+verbo-partícula es seguida por un SP direccional, entonces los hablantes
+nativos producirán el orden de constituyentes VOP más seguido que cuando
+el SP direccional no está presente. Si formulamos nuestras hipótesis
+matemáticamente, obtenemos los siguientes resultados:
+
+\[H_{1~\textrm{direccional}}: n_{\textrm{SSPP dir. en VPO}} < n_{\textrm{SSPP dir. en VOP}}\]
+\[H_{1~\textrm{no direccional}}: n_{\textrm{SSPP dir. en VPO}} \neq n_{\textrm{SSPP dir. en VOP}}\]
+\[H_{0}: n_{\textrm{SSPP dir. en VPO}} =n_{\textrm{SSPP dir. en VOP}}\]
+
+\hypertarget{ejercitacion-4}{%
+\subsection{Ejercitación}\label{ejercitacion-4}}
+
+\begin{enumerate}
+    \item
+      ¿Cuáles de los siguientes enunciados podrían ser hipótesis científicas?
+      \begin{enumerate}
+          \item
+            ¿La frecuencia fundamental aumenta con la edad?
+          \item
+            El sujeto X aprenderá la palabra \emph{casa} antes que la palabra
+            \emph{examen}.
+          \item
+            La presencia de tonos en una lengua está influida por la humedad de
+            la zona en que se habla.
+          \item
+            Las lenguas con menos hablantes posiblemente tienden a cambiar más
+            rápidamente que las lenguas con muchos hablantes.
+          \item
+            La relación entre forma y significado es arbitraria.
+          \item
+            Los tweets de Donald Trump hacen caer el valor de la industria china.
+          \item
+            
+      \end{enumerate}
+    \item
+      Donde sea posible, reformulá los enunciados en forma de hipótesis.
+    \item
+      Operacionalizá las variables involucradas y determiná de qué tipo es
+      cada una.
+    \item
+      ¿Qué variables podrían estar influyendo y no están siendo tomadas en cuenta?
+     \item
+      Operacionalizá matemáticamente las hipótesis.
+\end{enumerate}
+
+\hypertarget{recoleccion-de-datos}{%
+\section{Recolección de datos}\label{recoleccion-de-datos}}
+
+La \textbf{recolección} de datos comienza solo después de haber
+operacionalizado las variables y formulado las hipótesis. Por lo
+general, no se estudia la población entera sino una muestra. Si queremos
+que nuestros datos puedan generalizarse a la población, esta muestra
+debe ser \textbf{representativa} (i.e., las distintas partes de la
+población deben estar reflejadas en la muestra) y \textbf{balanceada}
+(i.e., los tamaños de las partes de la muestra deben corresponderse con
+las proporciones que presentan en la población). Esto muchas veces es un
+ideal teórico porque con frecuencia no conocemos todas las partes y las
+proporciones de la población. Una forma de obtener una muestra
+representativa y balanceada es a partir de la randomización. Este es uno
+de los principios más importantes de la recolección de datos.
+
+
+\subsection{Tipos de estudios}
+
+De acuerdo al grado en el que se pueden manipular las condiciones del estudio pueden distinguirse dos tipos: 
+
+\begin{description}
+    \item[\small{Experimento:}]
+        Es un estudio en el cual las condiciones son asignadas de manera deliberada (y usualmente aleatoria) a individuos/sujetos/instancias temporales con el objetivo de ver si el efecto de estas condiciones en alguna característica particular. Las condiciones suelen llamarse \emph{tratamientos} y se corresponden con los niveles de la(s) variable(s) independiente(s). La característica observada, por su parte, se corresponde con la variable dependiente. Los individuos/objetos/instancias temporales son las \emph{unidades experimentales}.
+    \item[\small{Estudio observacional:}]
+        Es un estudio donde las condiciones no son asignadas ni controladas por la persona que investiga, sino simplemente observadas. Las condiciones son características inherentes de cada sujeto/objeto/instancia temporal. El interés sigue puesto en comparar los valores de la variable dependiente en función de los niveles de la variable independiente. Aquí podemos distinguir entre estudios prospectivos, donde van recolectándose observaciones a medida que van teniendo lugar sucesos de interés, y estudios retrospectivos, donde se recolectan los datos luego de ocurridos los sucesos.
+\end{description}
+
+En un estudio experimental es muy importante la manera en la que se seleccionen las observaciones que integran la muestra, dado que para poder generalizar los resultados a la población de interés es importante que las observaciones sean independientes entre sí y que los distintos grupos dentro de la población estén debidamente representados. En términos de la selección de las unidades experimentales, se pueden identificar por lo menos cuatro formas distintas de muestreo:
+
+\begin{description}
+    \item[\small{Muestreo aleatorio:}]
+        Supone la posibilidad de elegir al azar las unidades experimentales sobre la totalidad de la población.
+    \item[\small{Muestreo estratificado:}]
+        Supone la división de la población en estratos, subgrupos que comparten semejanzas respecto de un determinado conjunto de variables. La muestra del experimento se realiza en base a la proporción de la población total que representa cada estrato.
+    \item[\small{Muestreo por \emph{clusters}:}]
+        Consiste en dividir a la población en grupos de manera aleatoria, seleccionar \textbf{n} grupos, y dentro de cada grupo muestrear aleatoriamente.
+    \item[\small{Muestreo por conveniencia:}]
+        Consiste en una selección basada en la accesibilidad relativa de distintos miembros de la población. Puede generar una cantidad importante de sesgo en los resultados, dado que puede estar asociado a la recolección de muestras no independientes entre sí, o a la subrrepresentación de grupos.
+\end{description}
+
+
+
+
+\hypertarget{ejercitacion-5}{%
+\subsection{Ejercitación}\label{ejercitacion-5}}
+
+\begin{enumerate}
+    \item
+        De los siguientes ejemplos, ¿cuáles son experimentos y cuáles estudios observacionales?
+        \begin{enumerate}
+            \item
+                Se intentó identificar los efectos de distractores externos (ninguno, constante, variables) y de
+                tipos de palabras (frutas, sustantivos, cualquier tipo) en la habilidad para memorizar palabras.
+                Hay nueve (3 x 3) combinaciones de distracción y tipo de palabra. 36 sujetos fueron asignados al
+                azar a las nueve combinaciones, con 4 sujetos por combinación. Para cada tipo de palabra, se preparó
+                una lista con 30 términos. Cada sujeto estudió la lista que le fue asignada por 5 minutos. Luego de 
+                una espera de 2 minutos, se le pidió a los sujetos que reciten la totalidad de palabras que
+                recordaban y se midió la cantidad de palabras correctamente reportadas.
+            \item
+                Se intentó comparar la dificultad de lectura en dos revistas, \textbf{Personas} y \textbf{Personas
+                Jóvenes}. Se seleccionaron cien oraciones al azar de la última edición de cada revista y, para cada
+                una, se comparó el largo promedio de las oraciones en cantidad de letras.
+            \item
+                Se intentó determinar si el CI de les niñes está relacionado con haber sido amamantades o no. 
+                Investigadores midieron el CI de una gran cantidad de estudiantes de primer grado en una ciudad 
+                grande. Les investigadores además consultaron a las madres si les habían amamantado o no.
+            \item
+                Se intentó determinar si una reducción en el número de pop-ups mejoraba la experiencia de uso de un
+                sitio web. Un grupo de 1000 suscriptores fueron seleccionados al azar. La mitad de ellos vieron
+                aproximadamente la mitad de pop-ups al visitar el sitio, mientras que la otra mitad vio la cantidad
+                usual. Tras dos semanas, se le solicitó a les suscriptores que completaran una encuesta de
+                satisfacción.
+            \end{enumerate}
+    \item
+        En una población compuesta por hablantes de hasta 25 años en un 43\%,
+        hablantes de entre 26 y 50 años en un 29\%, hablantes de entre 51 y 75
+        años en un 19\% y mayores de 76 en un 9\%, querés estudiar la
+        influencia del trap en la lengua. Diseñá el estudio.
+\end{enumerate}
+
+
+\hypertarget{almacenamiento-de-datos}{%
+\section{Almacenamiento de datos}\label{almacenamiento-de-datos}}
+
+Una vez que recolectamos los datos (o mientras lo hacemos), es necesario
+\textbf{almacenarlos} en un formato que nos permita anotarlos,
+manipularlos y evaluarlos fácilmente. Para esto es recomendable el uso
+de hojas de cálculo (e.g., LibreOffice Calc), bases de datos o R.
+
+Un formato recomendado para el almacenamiento es el
+\emph{case-by-variable} (véase Cuadro 4):
+
+\begin{itemize}
+    \item
+      la primera fila contiene los nombres de las variables;
+    \item
+      las otras filas representan cada una un \emph{data point} (i.e., una
+      observación determinada de la variable dependiente);
+    \item
+      la primera columna numera todos los \(n\) casos de 1 a \(n\) (esto
+      permite identificar cada fila y restaurar el orden original);
+    \item
+      las otras columnas representan una sola variable o característica
+      correspondiente a un determinado \emph{data point}; y
+    \item
+      la información faltante se anota usando \emph{un} símbolo (por
+      ejemplo, ``NA'') y el mismo solo debe usarse para representar dicho
+      significado.
+\end{itemize}
+
+\begin{longtable}[]{@{}llll@{}}
+\caption{Una tabla que usa el formato \emph{case-by-variable} para codificar información sobre el
+posicionamiento de partículas en inglés en función del largo del OD
+medido en sílabas.}\tabularnewline
+\toprule
+\begin{minipage}[b]{0.08\columnwidth}\raggedright
+Caso\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+Orden\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+Largo\strut
+\end{minipage} & \begin{minipage}[b]{0.63\columnwidth}\raggedright
+Oración\strut
+\end{minipage}\tabularnewline
+\midrule
+\endfirsthead
+\toprule
+\begin{minipage}[b]{0.08\columnwidth}\raggedright
+Caso\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+Orden\strut
+\end{minipage} & \begin{minipage}[b]{0.09\columnwidth}\raggedright
+Largo\strut
+\end{minipage} & \begin{minipage}[b]{0.63\columnwidth}\raggedright
+Oración\strut
+\end{minipage}\tabularnewline
+\midrule
+\endhead
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+1\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+vpo\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+2\strut
+\end{minipage} & \begin{minipage}[t]{0.63\columnwidth}\raggedright
+He turned on the lights.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+2\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+vpo\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+2\strut
+\end{minipage} & \begin{minipage}[t]{0.63\columnwidth}\raggedright
+The police broke into the house.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+3\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+vop\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+2\strut
+\end{minipage} & \begin{minipage}[t]{0.63\columnwidth}\raggedright
+Mary asked Susan out.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+4\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+vop\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+2\strut
+\end{minipage} & \begin{minipage}[t]{0.63\columnwidth}\raggedright
+I had to hold my dog back because there was a cat in the park.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+5\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+vop\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+2\strut
+\end{minipage} & \begin{minipage}[t]{0.63\columnwidth}\raggedright
+You can warm your feet up in front of the fireplace.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+6\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+vop\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+3\strut
+\end{minipage} & \begin{minipage}[t]{0.63\columnwidth}\raggedright
+Our teacher finally broke the project down into three separate
+parts.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+7\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+vpo\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+3\strut
+\end{minipage} & \begin{minipage}[t]{0.63\columnwidth}\raggedright
+I'm looking for a red dress.\strut
+\end{minipage}\tabularnewline
+\begin{minipage}[t]{0.08\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.09\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage} & \begin{minipage}[t]{0.63\columnwidth}\raggedright
+\ldots{}\strut
+\end{minipage}\tabularnewline
+\bottomrule
+\end{longtable}
+
+\hypertarget{ejercitacion-6}{%
+\subsection{Ejercitación}\label{ejercitacion-6}}
+
+\begin{enumerate}
+    \item
+      El dataset en el archivo datos\_lenguas.csv contiene información
+      sobre el orden de sujeto, verbo y objeto de distintas lenguas y de la
+      familia lingüística a la que pertenecen. Supongamos que querés investigar cómo este
+      orden se ve influido por la familia lingüística. Creá un dataset que
+      contenga esta información y se ajuste al formato
+      \emph{case-by-variable}.
+\end{enumerate}
+
+
+\end{document}
